@@ -6,7 +6,6 @@ import {
   FileText, 
   Home,
   UserCheck,
-  DollarSign,
   Activity
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -28,11 +27,15 @@ const Sidebar = ({ activeItem = 'Dashboard' }: SidebarProps) => {
     <div className="w-64 bg-gradient-to-b from-slate-900 to-slate-800 text-white h-screen fixed left-0 top-0 z-40 shadow-xl">
       <div className="p-6 border-b border-slate-700">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-orange-500 rounded-lg flex items-center justify-center">
-            <DollarSign className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/3b0bd8fb-948b-41b7-aab2-f5d699ddf613.png" 
+              alt="EclatPay" 
+              className="w-10 h-10 object-contain"
+            />
           </div>
           <div>
-            <h1 className="text-xl font-bold">Financia</h1>
+            <h1 className="text-xl font-bold">EclatPay</h1>
             <p className="text-slate-400 text-sm">Business Dashboard</p>
           </div>
         </div>
