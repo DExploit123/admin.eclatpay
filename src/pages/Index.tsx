@@ -46,19 +46,19 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50">
       <Sidebar activeItem="Dashboard" />
       
-      <div className="ml-64">
+      <div className="lg:ml-64">
         <Header />
         
-        <main className="p-6">
+        <main className="p-4 lg:p-6">
           {/* Metrics Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
             {metrics.map((metric, index) => (
               <MetricCard key={index} {...metric} />
             ))}
           </div>
           
           {/* Tables */}
-          <div className="space-y-8">
+          <div className="space-y-6 lg:space-y-8">
             <AgentActivityTable />
             <RecentDepositsTable />
           </div>

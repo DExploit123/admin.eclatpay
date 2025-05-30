@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
 
 interface Agent {
   id: string;
@@ -63,16 +64,16 @@ const Agents = () => {
     <div className="min-h-screen bg-gray-50">
       <Sidebar activeItem="Agents" />
       
-      <div className="ml-64">
+      <div className="lg:ml-64">
         <Header />
         
-        <main className="p-6">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Agents</h1>
+        <main className="p-4 lg:p-6">
+          <div className="mb-6 lg:mb-8">
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Agents</h1>
           </div>
 
           {/* Search Bar */}
-          <div className="mb-6">
+          <div className="mb-4 lg:mb-6">
             <div className="relative max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input 
@@ -83,48 +84,55 @@ const Agents = () => {
           </div>
 
           {/* Agents Table */}
-          <Card className="mb-8">
+          <Card className="mb-6 lg:mb-8">
             <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[640px]">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="text-left py-4 px-6 font-medium text-gray-600">Agent Name</th>
-                      <th className="text-left py-4 px-6 font-medium text-gray-600">Location</th>
-                      <th className="text-left py-4 px-6 font-medium text-gray-600">Customer Count</th>
-                      <th className="text-left py-4 px-6 font-medium text-gray-600">Savings</th>
-                      <th className="text-left py-4 px-6 font-medium text-gray-600">Status</th>
+                      <th className="text-left py-3 lg:py-4 px-4 lg:px-6 font-medium text-gray-600 text-sm lg:text-base">Agent Name</th>
+                      <th className="text-left py-3 lg:py-4 px-4 lg:px-6 font-medium text-gray-600 text-sm lg:text-base">Location</th>
+                      <th className="text-left py-3 lg:py-4 px-4 lg:px-6 font-medium text-gray-600 text-sm lg:text-base">Customer Count</th>
+                      <th className="text-left py-3 lg:py-4 px-4 lg:px-6 font-medium text-gray-600 text-sm lg:text-base">Savings</th>
+                      <th className="text-left py-3 lg:py-4 px-4 lg:px-6 font-medium text-gray-600 text-sm lg:text-base">Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {agents.map((agent) => (
                       <tr 
                         key={agent.id} 
-                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
-                        onClick={() => window.location.href = `/agents/${agent.id}`}
+                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                       >
-                        <td className="py-4 px-6 text-blue-600 hover:underline font-medium">
-                          {agent.name}
+                        <td className="py-3 lg:py-4 px-4 lg:px-6">
+                          <Link 
+                            to={`/agents/${agent.id}`}
+                            className="text-blue-600 hover:underline font-medium text-sm lg:text-base"
+                          >
+                            {agent.name}
+                          </Link>
                         </td>
-                        <td className="py-4 px-6 text-blue-600 hover:underline">
-                          <div className="flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
+                        <td className="py-3 lg:py-4 px-4 lg:px-6">
+                          <Link 
+                            to={`/agents/${agent.id}`}
+                            className="text-blue-600 hover:underline flex items-center gap-1 text-sm lg:text-base"
+                          >
+                            <MapPin className="w-3 h-3 lg:w-4 lg:h-4" />
                             {agent.location}
-                          </div>
+                          </Link>
                         </td>
-                        <td className="py-4 px-6 text-gray-900 font-medium">
+                        <td className="py-3 lg:py-4 px-4 lg:px-6 text-gray-900 font-medium text-sm lg:text-base">
                           {agent.customerCount}
                         </td>
-                        <td className="py-4 px-6 text-gray-900 font-semibold">
+                        <td className="py-3 lg:py-4 px-4 lg:px-6 text-gray-900 font-semibold text-sm lg:text-base">
                           {agent.savings}
                         </td>
-                        <td className="py-4 px-6">
+                        <td className="py-3 lg:py-4 px-4 lg:px-6">
                           <Badge 
                             variant={agent.status === 'Active' ? 'default' : 'secondary'}
-                            className={agent.status === 'Active' 
+                            className={`${agent.status === 'Active' 
                               ? 'bg-green-100 text-green-800 hover:bg-green-200' 
                               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                            }
+                            } text-xs lg:text-sm`}
                           >
                             {agent.status}
                           </Badge>
