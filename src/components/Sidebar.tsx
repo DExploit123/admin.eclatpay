@@ -1,4 +1,3 @@
-
 import { 
   BarChart3, 
   Users, 
@@ -8,13 +7,16 @@ import {
   UserCheck,
   Activity
 } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   activeItem?: string;
 }
 
-const Sidebar = ({ activeItem = 'Dashboard' }: SidebarProps) => {
+const Sidebar = ({ activeItem }: SidebarProps) => {
+  const location = useLocation();
+  
   const menuItems = [
     { name: 'Dashboard', icon: Home, href: '/' },
     { name: 'Agents', icon: UserCheck, href: '/agents' },
@@ -43,30 +45,33 @@ const Sidebar = ({ activeItem = 'Dashboard' }: SidebarProps) => {
       
       <nav className="mt-8 px-4">
         <ul className="space-y-2">
-          {menuItems.map((item) => (
-            <li key={item.name}>
-              <a
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group",
-                  activeItem === item.name 
-                    ? "bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg" 
-                    : "hover:bg-slate-700/50"
-                )}
-              >
-                <item.icon className={cn(
-                  "w-5 h-5 transition-transform group-hover:scale-110",
-                  activeItem === item.name ? "text-white" : "text-slate-300"
-                )} />
-                <span className={cn(
-                  "font-medium",
-                  activeItem === item.name ? "text-white" : "text-slate-300"
-                )}>
-                  {item.name}
-                </span>
-              </a>
-            </li>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = activeItem === item.name || location.pathname === item.href;
+            return (
+              <li key={item.name}>
+                <Link
+                  to={item.href}
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group",
+                    isActive
+                      ? "bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg" 
+                      : "hover:bg-slate-700/50"
+                  )}
+                >
+                  <item.icon className={cn(
+                    "w-5 h-5 transition-transform group-hover:scale-110",
+                    isActive ? "text-white" : "text-slate-300"
+                  )} />
+                  <span className={cn(
+                    "font-medium",
+                    isActive ? "text-white" : "text-slate-300"
+                  )}>
+                    {item.name}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
       
