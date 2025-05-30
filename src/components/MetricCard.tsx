@@ -1,6 +1,7 @@
 
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 interface MetricCardProps {
   title: string;
@@ -9,13 +10,15 @@ interface MetricCardProps {
   changeType: 'positive' | 'negative';
   icon: LucideIcon;
   gradient: string;
+  href?: string;
 }
 
-const MetricCard = ({ title, value, change, changeType, icon: Icon, gradient }: MetricCardProps) => {
-  return (
+const MetricCard = ({ title, value, change, changeType, icon: Icon, gradient, href }: MetricCardProps) => {
+  const CardContent = (
     <div className={cn(
       "relative overflow-hidden rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105",
-      gradient
+      gradient,
+      href ? "cursor-pointer" : ""
     )}>
       <div className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-20 -translate-y-4 translate-x-4">
         <Icon className="w-full h-full" />
@@ -45,6 +48,16 @@ const MetricCard = ({ title, value, change, changeType, icon: Icon, gradient }: 
       <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link to={href} className="block">
+        {CardContent}
+      </Link>
+    );
+  }
+
+  return CardContent;
 };
 
 export default MetricCard;

@@ -14,7 +14,8 @@ const Index = () => {
       change: '+10%',
       changeType: 'positive' as const,
       icon: Users,
-      gradient: 'bg-gradient-to-br from-blue-500 to-blue-600'
+      gradient: 'bg-gradient-to-br from-blue-500 to-blue-600',
+      href: '/agents'
     },
     {
       title: 'Total Customers',
