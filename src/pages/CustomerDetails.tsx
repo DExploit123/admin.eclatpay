@@ -54,29 +54,30 @@ const CustomerDetails = () => {
           <div className="mb-6 lg:mb-8">
             <div className="flex items-center gap-4 mb-4">
               <Link to="/customers">
-                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" className="flex items-center gap-2 text-sm">
                   <ArrowLeft className="w-4 h-4" />
-                  Back to Customers
+                  <span className="hidden sm:inline">Back to Customers</span>
+                  <span className="sm:hidden">Back</span>
                 </Button>
               </Link>
             </div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Customer Details</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Customer Details</h1>
             <p className="text-gray-600 text-sm lg:text-base">Complete customer information and transaction history</p>
           </div>
 
           {/* Customer Info Card */}
           <Card className="mb-6 lg:mb-8">
             <CardContent className="p-4 lg:p-6">
-              <div className="flex flex-col lg:flex-row gap-6">
-                <div className="flex items-center gap-4">
-                  <Avatar className="w-16 h-16 lg:w-20 lg:h-20">
+              <div className="flex flex-col gap-4 lg:gap-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <Avatar className="w-16 h-16 lg:w-20 lg:h-20 self-center sm:self-start">
                     <AvatarFallback className="bg-blue-100 text-blue-600 text-xl lg:text-2xl font-bold">
                       {customer.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
-                    <h2 className="text-xl lg:text-2xl font-bold text-gray-900">{customer.name}</h2>
-                    <p className="text-gray-600">{customer.id}</p>
+                  <div className="text-center sm:text-left">
+                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">{customer.name}</h2>
+                    <p className="text-gray-600 text-sm lg:text-base">{customer.id}</p>
                     <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium mt-2 ${
                       customer.status === 'Active' 
                         ? 'bg-green-100 text-green-800' 
@@ -87,52 +88,52 @@ const CustomerDetails = () => {
                   </div>
                 </div>
                 
-                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 text-gray-400" />
-                    <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <Phone className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <div className="min-w-0">
                       <p className="text-sm text-gray-600">Phone</p>
-                      <p className="font-medium">{customer.phone}</p>
+                      <p className="font-medium text-sm lg:text-base truncate">{customer.phone}</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-5 h-5 text-gray-400" />
-                    <div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <Mail className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <div className="min-w-0">
                       <p className="text-sm text-gray-600">Email</p>
-                      <p className="font-medium">{customer.email}</p>
+                      <p className="font-medium text-sm lg:text-base truncate">{customer.email}</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <DollarSign className="w-5 h-5 text-gray-400" />
-                    <div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <DollarSign className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <div className="min-w-0">
                       <p className="text-sm text-gray-600">Balance</p>
                       <p className="font-medium text-lg">{customer.balance}</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <User className="w-5 h-5 text-gray-400" />
-                    <div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <User className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <div className="min-w-0">
                       <p className="text-sm text-gray-600">Agent</p>
-                      <p className="font-medium">{customer.agent}</p>
+                      <p className="font-medium text-sm lg:text-base truncate">{customer.agent}</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-gray-400" />
-                    <div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <div className="min-w-0">
                       <p className="text-sm text-gray-600">Join Date</p>
-                      <p className="font-medium">{customer.joinDate}</p>
+                      <p className="font-medium text-sm lg:text-base">{customer.joinDate}</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <Activity className="w-5 h-5 text-gray-400" />
-                    <div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <Activity className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <div className="min-w-0">
                       <p className="text-sm text-gray-600">Last Activity</p>
-                      <p className="font-medium">{customer.lastActivity}</p>
+                      <p className="font-medium text-sm lg:text-base">{customer.lastActivity}</p>
                     </div>
                   </div>
                 </div>
@@ -143,17 +144,24 @@ const CustomerDetails = () => {
           {/* Tabs */}
           <Tabs defaultValue="transactions" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="transactions">Transaction History</TabsTrigger>
-              <TabsTrigger value="activity">Activity Log</TabsTrigger>
+              <TabsTrigger value="transactions" className="text-xs sm:text-sm">
+                <span className="hidden sm:inline">Transaction History</span>
+                <span className="sm:hidden">Transactions</span>
+              </TabsTrigger>
+              <TabsTrigger value="activity" className="text-xs sm:text-sm">
+                <span className="hidden sm:inline">Activity Log</span>
+                <span className="sm:hidden">Activity</span>
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="transactions">
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>Transaction History</CardTitle>
-                  <Button variant="outline" size="sm">
+                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-4">
+                  <CardTitle className="text-base sm:text-lg">Transaction History</CardTitle>
+                  <Button variant="outline" size="sm" className="self-start sm:self-auto">
                     <Download className="w-4 h-4 mr-2" />
-                    Export
+                    <span className="hidden sm:inline">Export</span>
+                    <span className="sm:hidden">Export</span>
                   </Button>
                 </CardHeader>
                 <CardContent className="p-0">
@@ -161,23 +169,23 @@ const CustomerDetails = () => {
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-gray-50">
-                          <TableHead>Date</TableHead>
-                          <TableHead>Amount</TableHead>
-                          <TableHead>Type</TableHead>
-                          <TableHead>Agent</TableHead>
+                          <TableHead className="text-xs sm:text-sm">Date</TableHead>
+                          <TableHead className="text-xs sm:text-sm">Amount</TableHead>
+                          <TableHead className="text-xs sm:text-sm">Type</TableHead>
+                          <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Agent</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {transactions.map((transaction, index) => (
                           <TableRow key={index}>
-                            <TableCell>{transaction.date}</TableCell>
-                            <TableCell className="font-medium text-green-600">{transaction.amount}</TableCell>
+                            <TableCell className="text-xs sm:text-sm">{transaction.date}</TableCell>
+                            <TableCell className="font-medium text-green-600 text-xs sm:text-sm">{transaction.amount}</TableCell>
                             <TableCell>
                               <span className="inline-block px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                 {transaction.type}
                               </span>
                             </TableCell>
-                            <TableCell>{transaction.agent}</TableCell>
+                            <TableCell className="text-xs sm:text-sm hidden sm:table-cell">{transaction.agent}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -190,20 +198,22 @@ const CustomerDetails = () => {
             <TabsContent value="activity">
               <Card>
                 <CardHeader>
-                  <CardTitle>Activity Log</CardTitle>
+                  <CardTitle className="text-base sm:text-lg">Activity Log</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {activities.map((activity, index) => (
-                      <div key={index} className="flex gap-4 p-4 border border-gray-200 rounded-lg">
+                      <div key={index} className="flex gap-3 p-3 sm:p-4 border border-gray-200 rounded-lg">
                         <div className="w-2 h-2 mt-2 rounded-full bg-blue-500 flex-shrink-0"></div>
-                        <div className="flex-1">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
-                            <h4 className="font-medium text-gray-900">{activity.action}</h4>
-                            <span className="text-sm text-gray-500">{activity.date}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col gap-1">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                              <h4 className="font-medium text-gray-900 text-sm sm:text-base">{activity.action}</h4>
+                              <span className="text-xs sm:text-sm text-gray-500">{activity.date}</span>
+                            </div>
+                            <p className="text-gray-600 text-xs sm:text-sm break-words">{activity.description}</p>
+                            <p className="text-gray-500 text-xs mt-1">By: {activity.agent}</p>
                           </div>
-                          <p className="text-gray-600 text-sm mt-1">{activity.description}</p>
-                          <p className="text-gray-500 text-xs mt-2">By: {activity.agent}</p>
                         </div>
                       </div>
                     ))}
