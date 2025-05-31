@@ -23,7 +23,8 @@ const Index = () => {
       change: '+5%',
       changeType: 'positive' as const,
       icon: Users,
-      gradient: 'bg-gradient-to-br from-purple-500 to-purple-600'
+      gradient: 'bg-gradient-to-br from-purple-500 to-purple-600',
+      href: '/customers'
     },
     {
       title: 'Total Savings',

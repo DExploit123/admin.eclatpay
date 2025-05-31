@@ -1,5 +1,5 @@
 
-import { Calendar, ChevronDown, Download, Filter, FileText } from 'lucide-react';
+import { Calendar, ChevronDown, Download, FileText } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import { Button } from '@/components/ui/button';
@@ -25,27 +25,31 @@ const Reports = () => {
     <div className="min-h-screen bg-gray-50">
       <Sidebar activeItem="Reports" />
       
-      <div className="ml-64">
+      <div className="lg:ml-64">
         <Header />
         
-        <main className="p-6 max-w-6xl">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Reports</h1>
-            <p className="text-gray-600">Generate custom reports based on your needs</p>
+        <main className="p-4 lg:p-6">
+          <div className="mb-6 lg:mb-8">
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Reports</h1>
+            <p className="text-gray-600 text-sm lg:text-base">Generate custom reports based on your needs</p>
           </div>
 
-          <Card className="mb-8">
+          <Card className="mb-6 lg:mb-8">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">Report Configuration</CardTitle>
+              <CardTitle className="text-lg lg:text-xl font-semibold">Report Configuration</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Report Type */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">Report Type</label>
                 <Tabs value={reportType} onValueChange={setReportType}>
-                  <TabsList className="grid w-full grid-cols-3">
+                  <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-0 h-auto sm:h-10">
                     {reportTypes.map((type) => (
-                      <TabsTrigger key={type} value={type} className="text-sm">
+                      <TabsTrigger 
+                        key={type} 
+                        value={type} 
+                        className="text-xs sm:text-sm py-2 px-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
                         {type}
                       </TabsTrigger>
                     ))}
@@ -61,15 +65,17 @@ const Reports = () => {
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-between text-left font-normal",
+                        "w-full justify-between text-left font-normal h-10 px-3",
                         !selectedDate && "text-muted-foreground"
                       )}
                     >
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        {selectedDate ? format(selectedDate, "PPP") : "Select date range"}
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Calendar className="w-4 h-4 flex-shrink-0" />
+                        <span className="truncate">
+                          {selectedDate ? format(selectedDate, "PPP") : "Select date range"}
+                        </span>
                       </div>
-                      <ChevronDown className="w-4 h-4" />
+                      <ChevronDown className="w-4 h-4 flex-shrink-0" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -78,7 +84,7 @@ const Reports = () => {
                       selected={selectedDate}
                       onSelect={setSelectedDate}
                       initialFocus
-                      className="p-3 pointer-events-auto"
+                      className="p-3"
                     />
                   </PopoverContent>
                 </Popover>
@@ -90,36 +96,46 @@ const Reports = () => {
                 <div className="space-y-3">
                   <Button
                     variant="outline"
-                    className="w-full justify-between text-left font-normal text-muted-foreground"
+                    className="w-full justify-between text-left font-normal text-muted-foreground h-10 px-3"
                   >
-                    <span>Select filters</span>
-                    <ChevronDown className="w-4 h-4" />
+                    <span className="truncate">Select filters</span>
+                    <ChevronDown className="w-4 h-4 flex-shrink-0" />
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full justify-between text-left font-normal text-muted-foreground"
+                    className="w-full justify-between text-left font-normal text-muted-foreground h-10 px-3"
                   >
-                    <span>Additional filters</span>
-                    <ChevronDown className="w-4 h-4" />
+                    <span className="truncate">Additional filters</span>
+                    <ChevronDown className="w-4 h-4 flex-shrink-0" />
                   </Button>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                <Button className="flex-1 bg-blue-600 hover:bg-blue-700">
+              <div className="space-y-4 pt-4">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 h-10">
                   <FileText className="w-4 h-4 mr-2" />
                   Generate Report
                 </Button>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm">CSV</Button>
-                  <Button variant="outline" size="sm">PDF</Button>
-                  <Button variant="outline" size="sm">Print</Button>
+                
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex gap-2 flex-1">
+                    <Button variant="outline" size="sm" className="flex-1 text-xs sm:text-sm">
+                      CSV
+                    </Button>
+                    <Button variant="outline" size="sm" className="flex-1 text-xs sm:text-sm">
+                      PDF
+                    </Button>
+                    <Button variant="outline" size="sm" className="flex-1 text-xs sm:text-sm">
+                      Print
+                    </Button>
+                  </div>
+                  
+                  <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+                    <Download className="w-4 h-4 mr-2" />
+                    Export
+                  </Button>
                 </div>
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export
-                </Button>
               </div>
             </CardContent>
           </Card>
