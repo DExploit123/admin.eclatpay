@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
@@ -27,7 +26,7 @@ const Login = () => {
     // Simulate login process
     setTimeout(() => {
       setIsLoading(false);
-      navigate('/');
+      navigate('/dashboard');
     }, 1500);
   };
 
