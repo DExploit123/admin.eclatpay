@@ -1,4 +1,5 @@
 
+import { useState } from 'react';
 import { Search, MapPin, Users, DollarSign, Activity } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
@@ -17,6 +18,8 @@ interface Agent {
 }
 
 const Agents = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
   const agents: Agent[] = [
     {
       id: '12345',
@@ -60,6 +63,13 @@ const Agents = () => {
     }
   ];
 
+  // Filter agents based on search term
+  const filteredAgents = agents.filter(agent =>
+    agent.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    agent.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    agent.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Sidebar activeItem="Agents" />
@@ -79,6 +89,8 @@ const Agents = () => {
               <Input 
                 placeholder="Search agents..." 
                 className="pl-10 bg-blue-50 border-blue-200 focus:bg-white transition-colors"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
@@ -98,7 +110,7 @@ const Agents = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {agents.map((agent) => (
+                    {filteredAgents.map((agent) => (
                       <tr 
                         key={agent.id} 
                         className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
@@ -142,6 +154,11 @@ const Agents = () => {
                   </tbody>
                 </table>
               </div>
+              {filteredAgents.length === 0 && searchTerm && (
+                <div className="p-6 text-center text-gray-500">
+                  No agents found matching "{searchTerm}"
+                </div>
+              )}
             </CardContent>
           </Card>
         </main>

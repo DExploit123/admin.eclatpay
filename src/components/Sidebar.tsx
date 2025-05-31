@@ -1,3 +1,4 @@
+
 import { 
   BarChart3, 
   Users, 
@@ -18,7 +19,7 @@ const Sidebar = ({ activeItem }: SidebarProps) => {
   const location = useLocation();
   
   const menuItems = [
-    { name: 'Dashboard', icon: Home, href: '/' },
+    { name: 'Dashboard', icon: Home, href: '/dashboard' },
     { name: 'Agents', icon: UserCheck, href: '/agents' },
     { name: 'Customers', icon: Users, href: '/customers' },
     { name: 'Transactions', icon: CreditCard, href: '/transactions' },

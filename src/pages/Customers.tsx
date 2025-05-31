@@ -189,7 +189,12 @@ const Customers = () => {
                               </AvatarFallback>
                             </Avatar>
                             <div className="min-w-0">
-                              <p className="font-medium text-gray-900 text-sm lg:text-base truncate">{customer.name}</p>
+                              <Link 
+                                to={`/customers/${customer.id}`}
+                                className="font-medium text-blue-600 hover:underline text-sm lg:text-base truncate block"
+                              >
+                                {customer.name}
+                              </Link>
                               <p className="text-xs lg:text-sm text-gray-500 sm:hidden">{customer.id}</p>
                             </div>
                           </div>
@@ -222,6 +227,11 @@ const Customers = () => {
                   </TableBody>
                 </Table>
               </div>
+              {filteredCustomers.length === 0 && searchTerm && (
+                <div className="p-6 text-center text-gray-500">
+                  No customers found matching "{searchTerm}"
+                </div>
+              )}
             </CardContent>
           </Card>
         </main>
