@@ -1,4 +1,3 @@
-
 import { LoginCredentials, RegisterData, User, AuthResponse, ApiResponse } from '@/types/auth';
 
 export class AuthService {
@@ -36,7 +35,33 @@ export class AuthService {
     return !!(token && user);
   }
 
-  // Admin Login - Modified to work with username field
+  // Enhanced error message helper
+  private getDetailedErrorMessage(error: any, response?: Response): string {
+    if (!response) {
+      return 'Network error: Unable to connect to the server. Please check your internet connection.';
+    }
+
+    switch (response.status) {
+      case 400:
+        return 'Invalid login credentials. Please check your email and password.';
+      case 401:
+        return 'Authentication failed. Please verify your email and password.';
+      case 403:
+        return 'Access denied. Your account may be disabled.';
+      case 404:
+        return 'Login service not found. Please contact support.';
+      case 500:
+        return 'Server error: The authentication service is currently experiencing issues. Please try again later or contact support.';
+      case 502:
+      case 503:
+      case 504:
+        return 'Service temporarily unavailable. Please try again in a few moments.';
+      default:
+        return `Server error (${response.status}): ${error?.message || 'Unknown error occurred'}`;
+    }
+  }
+
+  // Admin Login with enhanced error handling
   async login(credentials: { username: string; password: string }): Promise<AuthResponse> {
     try {
       console.log('AuthService: Starting login process with username:', credentials.username);
@@ -50,33 +75,80 @@ export class AuthService {
       console.log('AuthService: Sending login request to:', `${this.baseURL}/login`);
       console.log('AuthService: Login payload:', { email: apiCredentials.email, password: '[HIDDEN]' });
 
-      const response = await fetch(`${this.baseURL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(apiCredentials),
-      });
+      let response: Response;
+      
+      try {
+        response = await fetch(`${this.baseURL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(apiCredentials),
+          // Add timeout and other fetch options
+          signal: AbortSignal.timeout(30000), // 30 second timeout
+        });
+      } catch (fetchError) {
+        console.error('AuthService: Network error during login:', fetchError);
+        
+        if (fetchError instanceof Error) {
+          if (fetchError.name === 'AbortError') {
+            return {
+              success: false,
+              error: 'Request timeout: The server is taking too long to respond. Please try again.'
+            };
+          }
+          if (fetchError.message.includes('Failed to fetch')) {
+            return {
+              success: false,
+              error: 'Network error: Unable to connect to the authentication server. Please check your internet connection and try again.'
+            };
+          }
+        }
+        
+        return {
+          success: false,
+          error: 'Connection failed: Unable to reach the authentication server.'
+        };
+      }
 
       console.log('AuthService: Login response status:', response.status);
       console.log('AuthService: Login response ok:', response.ok);
 
-      const data = await response.json();
-      console.log('AuthService: Login response data:', data);
+      let data: any;
+      try {
+        data = await response.json();
+        console.log('AuthService: Login response data:', data);
+      } catch (jsonError) {
+        console.error('AuthService: Failed to parse response JSON:', jsonError);
+        return {
+          success: false,
+          error: this.getDetailedErrorMessage(jsonError, response)
+        };
+      }
 
       if (!response.ok) {
         console.error('AuthService: Login failed with status:', response.status);
         console.error('AuthService: Error response:', data);
-        throw new Error(data.message || data.error || 'Login failed');
+        
+        const errorMessage = this.getDetailedErrorMessage(data, response);
+        return {
+          success: false,
+          error: errorMessage
+        };
+      }
+
+      // Validate response data
+      if (!data.token || !data.user) {
+        console.warn('AuthService: Login response missing required data:', { hasToken: !!data.token, hasUser: !!data.user });
+        return {
+          success: false,
+          error: 'Invalid server response: Missing authentication data.'
+        };
       }
 
       // Store authentication data
-      if (data.token && data.user) {
-        console.log('AuthService: Storing auth data for user:', data.user.email);
-        this.storeAuthData(data.token, data.user);
-      } else {
-        console.warn('AuthService: Login response missing token or user data');
-      }
+      console.log('AuthService: Storing auth data for user:', data.user.email);
+      this.storeAuthData(data.token, data.user);
 
       return {
         success: true,
@@ -88,10 +160,10 @@ export class AuthService {
       };
 
     } catch (error) {
-      console.error('AuthService: Login error caught:', error);
+      console.error('AuthService: Unexpected login error:', error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Login failed'
+        error: error instanceof Error ? error.message : 'An unexpected error occurred during login.'
       };
     }
   }
