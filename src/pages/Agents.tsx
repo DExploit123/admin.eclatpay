@@ -1,12 +1,12 @@
-
 import { useState } from 'react';
-import { Search, MapPin, Users, DollarSign, Activity } from 'lucide-react';
+import { Search, MapPin, Users, DollarSign, Activity, Plus } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Agent {
   id: string;
@@ -19,6 +19,7 @@ interface Agent {
 
 const Agents = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   const agents: Agent[] = [
     {
@@ -78,8 +79,15 @@ const Agents = () => {
         <Header />
         
         <main className="p-4 lg:p-6">
-          <div className="mb-6 lg:mb-8">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Agents</h1>
+          <div className="mb-6 lg:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Agents</h1>
+            <Button 
+              onClick={() => navigate('/agents/register')}
+              className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 w-fit"
+            >
+              <Plus size={16} />
+              Add Agent
+            </Button>
           </div>
 
           {/* Enhanced Search Bar for Mobile */}
