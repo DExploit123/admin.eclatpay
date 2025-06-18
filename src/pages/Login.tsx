@@ -1,33 +1,47 @@
+// src/pages/Login.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, LogIn } from 'lucide-react';
+import { Eye, EyeOff, LogIn, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useAuth } from '@/services/authService';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  
+  const { login, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!username.trim() || !password.trim()) {
-      alert('Please fill in all fields');
+      setError('Please fill in all fields');
       return;
     }
 
-    setIsLoading(true);
+    setError(''); // Clear previous errors
     
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/dashboard');
-    }, 1500);
+    try {
+      const result = await login({ username: username.trim(), password });
+      
+      if (result.success) {
+        // Success - navigate to dashboard
+        navigate('/dashboard');
+      } else {
+        // Show error from API
+        setError(result.error || 'Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -53,20 +67,29 @@ const Login = () => {
             <p className="text-blue-200 text-sm">Access your dashboard</p>
           </CardHeader>
           <CardContent className="space-y-6">
+            {/* Error Alert */}
+            {error && (
+              <Alert className="bg-red-500/20 border-red-500/50 text-red-100">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Username Field */}
               <div className="space-y-2">
                 <Label htmlFor="username" className="text-white font-medium">
-                  Username
+                  Email / Username
                 </Label>
                 <Input
                   id="username"
                   type="text"
-                  placeholder="Enter your username"
+                  placeholder="Enter your email or username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="bg-white/20 border-white/30 text-white placeholder:text-blue-200 focus:bg-white/30 focus:border-blue-400 transition-all"
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -84,6 +107,7 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     className="bg-white/20 border-white/30 text-white placeholder:text-blue-200 focus:bg-white/30 focus:border-blue-400 transition-all pr-10"
                     required
+                    disabled={loading}
                   />
                   <Button
                     type="button"
@@ -91,6 +115,7 @@ const Login = () => {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
+                    disabled={loading}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4 text-blue-200" />
@@ -104,10 +129,10 @@ const Login = () => {
               {/* Login Button */}
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 transition-all duration-200 shadow-lg hover:shadow-xl"
-                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loading}
               >
-                {isLoading ? (
+                {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                     Signing in...
