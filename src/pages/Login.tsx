@@ -1,6 +1,7 @@
+
 // src/pages/Login.tsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -146,10 +147,16 @@ const Login = () => {
               </Button>
             </form>
 
-            {/* Footer */}
+            {/* Sign Up Link */}
             <div className="text-center pt-4 border-t border-white/20">
-              <p className="text-blue-200 text-xs">
-                Secure login to your business dashboard
+              <p className="text-blue-200 text-sm">
+                Don't have an account?{' '}
+                <Link 
+                  to="/signup" 
+                  className="text-blue-300 hover:text-white font-medium underline transition-colors"
+                >
+                  Sign up
+                </Link>
               </p>
             </div>
           </CardContent>
