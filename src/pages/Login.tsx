@@ -1,4 +1,3 @@
-
 // src/pages/Login.tsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useAuth } from '@/services/authService';
+import { useAuth } from '@/hooks/useAuth';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -22,6 +21,8 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('Login: Form submitted with username:', username);
+    
     if (!username.trim() || !password.trim()) {
       setError('Please fill in all fields');
       return;
@@ -30,18 +31,23 @@ const Login = () => {
     setError(''); // Clear previous errors
     
     try {
+      console.log('Login: Attempting login...');
       const result = await login({ username: username.trim(), password });
       
+      console.log('Login: Login result:', result);
+      
       if (result.success) {
+        console.log('Login: Success - navigating to dashboard');
         // Success - navigate to dashboard
         navigate('/dashboard');
       } else {
+        console.error('Login: Failed with error:', result.error);
         // Show error from API
         setError(result.error || 'Login failed. Please check your credentials.');
       }
     } catch (err) {
+      console.error('Login: Unexpected error:', err);
       setError('An unexpected error occurred. Please try again.');
-      console.error('Login error:', err);
     }
   };
 
