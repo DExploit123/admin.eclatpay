@@ -1,3 +1,4 @@
+
 // src/pages/Login.tsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -10,7 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -21,10 +22,17 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log('Login: Form submitted with username:', username);
+    console.log('Login: Form submitted with phone:', phone);
     
-    if (!username.trim() || !password.trim()) {
+    if (!phone.trim() || !password.trim()) {
       setError('Please fill in all fields');
+      return;
+    }
+
+    // Basic phone number validation
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+      setError('Please enter a valid phone number');
       return;
     }
 
@@ -32,7 +40,7 @@ const Login = () => {
     
     try {
       console.log('Login: Attempting login...');
-      const result = await login({ username: username.trim(), password });
+      const result = await login({ username: phone.trim(), password });
       
       console.log('Login: Login result:', result);
       
@@ -83,17 +91,17 @@ const Login = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Username Field */}
+              {/* Phone Number Field */}
               <div className="space-y-2">
-                <Label htmlFor="username" className="text-white font-medium">
-                  Email / Username
+                <Label htmlFor="phone" className="text-white font-medium">
+                  Phone Number
                 </Label>
                 <Input
-                  id="username"
-                  type="text"
-                  placeholder="Enter your email or username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="phone"
+                  type="tel"
+                  placeholder="Enter your phone number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="bg-white/20 border-white/30 text-white placeholder:text-blue-200 focus:bg-white/30 focus:border-blue-400 transition-all"
                   required
                   disabled={loading}
