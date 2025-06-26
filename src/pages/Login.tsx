@@ -40,7 +40,7 @@ const Login = () => {
     
     try {
       console.log('Login: Attempting login...');
-      const result = await login({ username: phone.trim(), password });
+      const result = await login({ phone: phone.trim(), password });
       
       console.log('Login: Login result:', result);
       
