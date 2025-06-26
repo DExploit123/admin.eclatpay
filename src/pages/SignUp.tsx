@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, UserPlus, AlertCircle, Upload } from 'lucide-react';
@@ -11,7 +12,7 @@ import { authService } from '@/services/authService';
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    phone: '',
     password: '',
     confirmPassword: ''
   });
@@ -37,7 +38,7 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name.trim() || !formData.email.trim() || !formData.password.trim()) {
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.password.trim()) {
       setError('Please fill in all required fields');
       return;
     }
@@ -52,13 +53,20 @@ const SignUp = () => {
       return;
     }
 
+    // Basic phone number validation
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    if (!phoneRegex.test(formData.phone.replace(/\s/g, ''))) {
+      setError('Please enter a valid phone number');
+      return;
+    }
+
     setError('');
     setLoading(true);
     
     try {
       const result = await authService.register({
         name: formData.name.trim(),
-        email: formData.email.trim(),
+        phone: formData.phone.trim(),
         password: formData.password,
         role: 'admin'
       }, profileImage || undefined);
@@ -110,24 +118,6 @@ const SignUp = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Profile Image Upload */}
-              <div className="space-y-2">
-                <Label htmlFor="profileImage" className="text-white font-medium">
-                  Profile Image (Optional)
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="profileImage"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="bg-white/20 border-white/30 text-white file:bg-blue-500/20 file:text-blue-200 file:border-0 file:rounded file:mr-2 focus:bg-white/30 focus:border-blue-400 transition-all"
-                    disabled={loading}
-                  />
-                  <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-blue-200 pointer-events-none" />
-                </div>
-              </div>
-
               {/* Name Field */}
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-white font-medium">
@@ -146,17 +136,17 @@ const SignUp = () => {
                 />
               </div>
 
-              {/* Email Field */}
+              {/* Phone Number Field */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-white font-medium">
-                  Email Address *
+                <Label htmlFor="phone" className="text-white font-medium">
+                  Phone Number *
                 </Label>
                 <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={formData.email}
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="Enter your phone number"
+                  value={formData.phone}
                   onChange={handleInputChange}
                   className="bg-white/20 border-white/30 text-white placeholder:text-blue-200 focus:bg-white/30 focus:border-blue-400 transition-all"
                   required
@@ -229,6 +219,24 @@ const SignUp = () => {
                       <Eye className="h-4 w-4 text-blue-200" />
                     )}
                   </Button>
+                </div>
+              </div>
+
+              {/* Profile Image Upload */}
+              <div className="space-y-2">
+                <Label htmlFor="profileImage" className="text-white font-medium">
+                  Profile Image (Optional)
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="profileImage"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="bg-white/20 border-white/30 text-white file:bg-blue-500/20 file:text-blue-200 file:border-0 file:rounded file:mr-2 focus:bg-white/30 focus:border-blue-400 transition-all"
+                    disabled={loading}
+                  />
+                  <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-blue-200 pointer-events-none" />
                 </div>
               </div>
 
