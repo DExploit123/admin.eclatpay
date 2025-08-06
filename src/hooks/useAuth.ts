@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { User } from '@/types/auth';
 import { AuthService } from '@/services/core/AuthService';
@@ -22,11 +21,12 @@ export const useAuth = () => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-const login = async (credentials: { phone: string; password: string }) => {
-  console.log('useAuth: Starting login for phone:', credentials.phone);
-  const result = await authService.login(credentials);
+  const login = async (credentials: { phone: string; password: string }) => {
+    setLoading(true);
+    try {
+      console.log('useAuth: Starting login for phone:', credentials.phone);
+      const result = await authService.login(credentials);
 
-      
       if (result.success && result.data) {
         console.log('useAuth: Login successful, updating state');
         setUser(result.data.user);
